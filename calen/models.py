@@ -37,8 +37,14 @@ class Action(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 
+class Categories(models.Model):
+    category = models.CharField(max_length=50)
+    created_date = models.DateTimeField(default=timezone.now)
+    published_date = models.DateTimeField(blank=True, null=True)
+
 class Schedule(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    category_id = models.ForeignKey(Categories, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
     start_plan = models.DateTimeField()
     finish_plan = models.DateTimeField()

@@ -12,6 +12,9 @@ def index(request):
     #デフォルトで今月の月間カレンダーを表示する
     calendar.setfirstweekday(6)
     default_calendar = calendar.monthcalendar(now.year, now.month)
-    res["calendar"] = default_calendar
-    print(default_calendar)
+    res["calendar"] = json.dumps({
+        "value": default_calendar,
+        "type": "month"
+    })
+    print(res)
     return render(request, "calen/index.html", res)

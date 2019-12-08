@@ -1,3 +1,4 @@
+import datetime
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -45,9 +46,11 @@ class Categories(models.Model):
 class Schedule(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Categories, on_delete=models.CASCADE)
-    title = models.CharField(max_length=20)
-    start_plan = models.DateTimeField()
-    finish_plan = models.DateTimeField()
+    title = models.CharField('概要',max_length=20)
+    description = models.TextField('詳細な説明', blank=True)
+    start_time = models.TimeField('開始時間', default=datetime.time(7, 0, 0))
+    end_time = models.TimeField('終了時間', default=datetime.time(7, 0, 0))
+    date = models.DateField('日付', default=timezone.now)
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 

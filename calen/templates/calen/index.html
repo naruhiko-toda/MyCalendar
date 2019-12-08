@@ -16,11 +16,22 @@
     <div class="calendar_month">
       {% include "./modules/calendar_month.html" %}
     </div>
+    <div class="calendar_week">
+      {% include "./modules/calendar_week.html" %}
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script>
+      var today = new Date();
+      var thisYear = today.getFullYear();
+      var thisMonth = today.getMonth()+1;
+      var thisDate = today.getDate();
+      var thisDay = [ "日", "月", "火", "水", "木", "金", "土" ][today.getDay()] ;
+      console.log(thisDay)
       var calendar = {{ calendar | safe }}
       console.log(calendar["value"])
       $(document).ready(function(){
+        console.log("あjgは")
+        $(".thisMonth").html(thisMonth+" 月")
         create_calendar();
       });
 

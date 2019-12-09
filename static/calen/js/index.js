@@ -25,3 +25,36 @@ function create_calendar(){
       break;
   }
 }
+
+function display_month(month){
+  $(".thisMonth").html(month+" 月")
+}
+
+function calendar_move(element){
+  data = {
+    "thisDate":parseInt(this_time["this_date"]),
+    "thisMonth":parseInt(this_time["this_month"]),
+    "thisYear":parseInt(this_time["this_year"]),
+    "type": element.value,
+    "format":calendar["type"]
+  }
+  console.log(data)
+  $.ajax({
+      url: "calen/get_calendar",
+      data: data,
+      type:'POST',
+  })
+  .then(
+      // 1つめは通信成功時のコールバック
+      function (data) {
+        console.log(data)
+        res = JSON.parse(data)
+        console.log(res)
+        this_time = res["this_time"]
+        calendar = res["calendar"]
+      },
+      // 2つめは通信失敗時のコールバック
+      function () {
+        alert("読み込み失敗");
+  });
+}

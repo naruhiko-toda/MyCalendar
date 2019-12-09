@@ -48,10 +48,11 @@ function calendar_move(element){
       // 1つめは通信成功時のコールバック
       function (data) {
         console.log(data)
-        res = JSON.parse(data)
-        console.log(res)
-        this_time = res["this_time"]
-        calendar = res["calendar"]
+        this_time = JSON.parse(data["this_time"])
+        calendar = JSON.parse(data["calendar"])
+        console.log(this_time)
+        console.log(calendar)
+        display_month(this_time["this_month"])
       },
       // 2つめは通信失敗時のコールバック
       function () {

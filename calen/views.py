@@ -18,10 +18,10 @@ def index(request):
         "value": default_calendar,
         "type": "month"
     })
-    res["this_time"] = json.dumps({
-        "this_date":str(now.day),
-        "this_year":str(now.year),
-        "this_month":str(now.month),
+    res["display_time"] = json.dumps({
+        "display_date":str(now.day),
+        "display_year":str(now.year),
+        "display_month":str(now.month),
     })
     print(res)
     return render(request, "calen/index.html", res)
@@ -29,21 +29,21 @@ def index(request):
 @csrf_exempt
 def get_calendar(request):
     res={}
-    this_year = int(request.POST["thisYear"])
-    this_month = int(request.POST["thisMonth"])
-    this_date = int(request.POST["thisDate"])
+    display_year = int(request.POST["display_year"])
+    display_month = int(request.POST["display_month"])
+    display_date = int(request.POST["display_date"])
     if request.POST["type"]=="forward":
-        tar_calendar,tar_year,tar_month = get_forward_calendar(this_year, this_month)
+        tar_calendar,tar_year,tar_month = get_forward_calendar(display_year, display_month)
     else:
-        tar_calendar,tar_year,tar_month = get_before_calendar(this_year, this_month)
+        tar_calendar,tar_year,tar_month = get_before_calendar(display_year, display_month)
     res["calendar"] = json.dumps({
         "value": tar_calendar,
         "type": "month"
     })
-    res["this_time"] = json.dumps({
-        "this_date":str(this_date),
-        "this_year":str(tar_year),
-        "this_month":str(tar_month),
+    res["display_time"] = json.dumps({
+        "display_date":str(display_date),
+        "display_year":str(tar_year),
+        "display_month":str(tar_month),
     })
     res["status"]=200
     print(res)

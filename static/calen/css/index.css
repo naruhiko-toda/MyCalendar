@@ -22,3 +22,58 @@ td{
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
 }
+
+.arrow{
+  display:  inline-block;
+  color: #aaa;
+  text-decoration:  none;
+  background-color: #b2eef7;
+  border-radius: 5px;
+  position:  relative;
+  height: 40px;
+  width: 40px;
+}
+.arrow::before{
+  content:  '';
+  width: 20px;
+  height: 20px;
+  display:  block;
+  transform: rotate(-45deg);
+  position:  absolute;
+  top: 0px;
+  bottom:  0;
+  left:  0;
+  right:  0;
+  margin:  auto;
+}
+.right_arrow::before {
+    border-bottom: solid 2px;
+    border-right: solid 2px;
+}
+
+.left_arrow::before {
+    border-top: solid 2px;
+    border-left: solid 2px;
+}
+
+.btn_b {
+	width: 38px;
+	height: 38px;
+	background: #FFF;
+	border: 2px solid #2a82a3;
+	border-radius: 70px;
+	-moz-border-radius: 70px;
+	-webkit-border-radius: 70px;
+	color: #2a82a3;
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	font-size: 140%;
+	transition: background-color 0.5s ease-in;
+	-webkit-transition: background-color 0.5s ease-in;
+}
+.btn_b:hover {
+	background: #2a82a3;
+	color: #FFF;
+	border: 2px solid #FFF;
+}

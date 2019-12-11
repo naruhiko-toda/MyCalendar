@@ -16,8 +16,8 @@
     <div class="calendar_month">
       {% include "./modules/calendar_month.html" %}
     </div>
-    <div class="calendar_week">
-      {% include "./modules/calendar_week.html" %}
+    <div class="calendar_day">
+      {% include "./modules/calendar_day.html" %}
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script>
@@ -33,6 +33,7 @@
       $(document).ready(function(){
         display_month(thisMonth);
         create_calendar();
+        draw_today(thisYear,thisMonth,thisDate);
       });
 
     </script>

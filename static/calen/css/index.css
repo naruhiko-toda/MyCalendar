@@ -2,6 +2,23 @@
   font-family: 'Pacifico', cursive;
 }
 
-.calendar_week{
+.calendar_day{
   display: none;
+}
+table{
+  width: 100%;
+  text-align: center;
+
+}
+td{
+  width: 14.2857%;
+}
+.calen_top{
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+.calen_bottom{
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
 }

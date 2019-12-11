@@ -6,23 +6,25 @@ function create_calendar(){
         $(".calendar_month tbody").append("<tr></tr>")
         $(".calendar_month tbody").append("<tr></tr>")
         for(var j=0; j<7; j++){
+          console.log(j)
           if(calendar["value"][i][j] != 0){
             $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+1)+")").append("<td class='calen_top' id="+this_time["this_year"]+"_"+this_time["this_month"]+"_"+calendar["value"][i][j]+">"+calendar["value"][i][j]+"</td>")
-            $(".calendar_month tbody > tr:nth-child("+parseInt(2*i)+")").append("<td class='clean_bottom'></td>")
+            $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+2)+")").append("<td class='calen_bottom'></td>")
           }else{
             $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+1)+")").append("<td class='calen_top'></td>")
-            $(".calendar_month tbody > tr:nth-child("+parseInt(2*i)+")").append("<td class='clean_bottom'></td>")
+            $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+2)+")").append("<td class='calen_bottom'></td>")
           }
         }
+        bottom_height = ($(window).height()-26-56-(27*calendar["value"].length)) / calendar["value"].length
+        $(".calen_bottom").css("height",bottom_height)
       }
       break;
-    case "week":
-      $(".calendar_week tbody").empty();
-      $(".calendar_week tbody").append("<tr></tr>")
-      $(".calendar_week tbody").append("<tr></tr>")
+    case "day":
+      $(".calendar_day tbody").empty();
+      $(".calendar_day tbody").append("<tr></tr>")
       for(var j=0; j<7; j++){
-        $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+1)+")").append("<td>"+calendar["value"][i]+"</td>")
-        $(".calendar_month tbody > tr:nth-child("+parseInt(2*i)+")").append("<td></td>")
+        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i+1)+")").append("<td>"+calendar["value"][i]+"</td>")
+        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i)+")").append("<td></td>")
       }
       break;
   }
@@ -30,6 +32,10 @@ function create_calendar(){
 
 function display_month(month){
   $(".thisMonth").html(month+" 月")
+}
+
+function draw_today(thisYear,thisMonth,thisDate){
+  $("#"+thisYear+"_"+thisMonth+"_"+thisDate).css("background-color","#8ffbff")
 }
 
 function calendar_move(element){
@@ -47,7 +53,6 @@ function calendar_move(element){
       type:'POST',
   })
   .then(
-      // 1つめは通信成功時のコールバック
       function (data) {
         console.log(data)
         this_time = JSON.parse(data["this_time"])
@@ -57,7 +62,6 @@ function calendar_move(element){
         display_month(this_time["this_month"])
         create_calendar();
       },
-      // 2つめは通信失敗時のコールバック
       function () {
         alert("読み込み失敗");
   });

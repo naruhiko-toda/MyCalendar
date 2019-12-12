@@ -159,6 +159,7 @@ $(function() {
       $("#register_schedule_button").prop("disabled", true);
       $(".finish_date").addClass("error_input")
       $(".finish_time").addClass("error_input")
+      alert("不適切な時間です。開始時間より終了時間が後になるようにしてください！")
     }else{
       $("#register_schedule_button").prop("disabled", false);
       $(".finish_date").removeClass("error_input")

@@ -81,3 +81,7 @@ td{
 .schedule_start_input, .schedule_finish_input{
   display: flex;
 }
+
+.error_input{
+  background-color: #cc5947;
+}

@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="btn btn-primary btn-sm">保存</button>
+          <button type="button" class="btn btn-primary btn-sm" id = "register_schedule_button">保存</button>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -12,14 +12,13 @@
         </div>
         <div class="modal-body">
           <div class="schedule_start_input">
-            <input type="text" class="start_date" id="datepicker_start">
-            <input type="text" class="start_time" id="">
+            <input type="text" class="start_date" onchange="check_time();">
+            <input type="text" class="start_time" onchange="check_time();">
           </div>
           <div class="schedule_finish_input">
-            <input type="text" class="finish_date" id="datepicker_finish">
-            <input type="text" class="finish_time" id="">
+            <input type="text" class="finish_date" onchange="check_time();">
+            <input type="text" class="finish_time" onchange="check_time();">
           </div>
-            <input type="text" class="form-control" id="start_time">
             <input type="text" class="form-control" id="recipient-name">
             <textarea class="form-control" id="message-text" placeholder="メモの追加"></textarea>
         </div>

@@ -92,8 +92,76 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 })
 
 $(function() {
-  $("#datepicker_start").datepicker();
-  $("#datepicker_start").val(this_year+'/'+this_month+'/'+this_date);
-  $("#datepicker_finish").datepicker();
-  $("#datepicker_finish").val(this_year+'/'+this_month+'/'+this_date);
+  $(".start_date").datepicker();
+  console.log(this_hour)
+  if(this_hour==23){
+    $(".start_date").val(this_year+'/'+this_month+'/'+parseInt(this_date+1));
+    start_default = this_hour - 23
+  }else{
+    start_default = this_hour + 1
+    $(".start_date").val(this_year+'/'+this_month+'/'+this_date);
+  }
+  $(".finish_date").datepicker();
+  if(this_hour>=22){
+    finish_default = this_hour - 22
+    $(".finish_date").val(this_year+'/'+this_month+'/'+parseInt(this_date+1));
+  }else{
+    finish_default = this_hour + 2
+    $(".finish_date").val(this_year+'/'+this_month+'/'+this_date);
+  }
+  $('.start_time').timepicker({
+    timeFormat: 'H:mm',
+    interval: 60,
+    minTime: '0:00',
+    maxTime: '23:00',
+    defaultTime: start_default+":00",
+    startTime: '0:00',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true,
+    zindex: 1100
+    });
+  $('.finish_time').timepicker({
+    timeFormat: 'H:mm',
+    interval: 60,
+    minTime: '0:00',
+    maxTime: '23:00',
+    defaultTime: finish_default+":00",
+    startTime: '0:00',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true,
+    zindex: 1100
+    });
   });
+
+  function check_time(){
+    start_date_list = $(".start_date").val().split("/")
+    start_year = start_date_list[0]
+    start_month = start_date_list[1]
+    start_date = start_date_list[2]
+    start_time_list = $(".start_time").val().split(":")
+    start_hour = start_time_list[0]
+    start_minute = start_time_list[1]
+    start = new　Date(start_year,start_month,start_date,start_hour,start_minute,0)
+    finish_date_list = $(".finish_date").val().split("/")
+    finish_year = finish_date_list[0]
+    finish_month = finish_date_list[1]
+    finish_date = finish_date_list[2]
+    finish_time_list = $(".finish_time").val().split(":")
+    finish_hour = finish_time_list[0]
+    finish_minute = finish_time_list[1]
+    finish = new　Date(finish_year,finish_month,finish_date,finish_hour,finish_minute,0)
+    console.log(start);
+    console.log(finish);
+    console.log()
+    if(start > finish){
+      $("#register_schedule_button").prop("disabled", true);
+      $(".finish_date").addClass("error_input")
+      $(".finish_time").addClass("error_input")
+    }else{
+      $("#register_schedule_button").prop("disabled", false);
+      $(".finish_date").removeClass("error_input")
+      $(".finish_time").removeClass("error_input")
+    }
+  }

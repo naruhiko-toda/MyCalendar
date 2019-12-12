@@ -90,3 +90,10 @@ $('#exampleModal').on('show.bs.modal', function (event) {
   modal.find('.modal-title').text('New message to ' + recipient)
   modal.find('.modal-body input').val(recipient)
 })
+
+$(function() {
+  $("#datepicker_start").datepicker();
+  $("#datepicker_start").val(this_year+'/'+this_month+'/'+this_date);
+  $("#datepicker_finish").datepicker();
+  $("#datepicker_finish").val(this_year+'/'+this_month+'/'+this_date);
+  });

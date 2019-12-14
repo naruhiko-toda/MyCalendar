@@ -1,7 +1,7 @@
 
 function post_sign_in_info(){
   $.ajax({
-      url: "calen/sign_in",
+      url : "calen/sign_in",
       data: $('#sign_in_form').serialize(),
       type:'POST',
   })
@@ -16,7 +16,7 @@ function post_sign_in_info(){
 
 function post_sign_up_info(){
   $.ajax({
-      url: "calen/sign_up",
+      url : "calen/sign_up",
       data: $('#sign_up_form').serialize(),
       type:'POST',
   })

@@ -65,7 +65,7 @@ function calendar_move(element){
   }
   console.log(data)
   $.ajax({
-      url: "calen/get_calendar",
+      url : "calen/get_calendar",
       data: data,
       type:'POST',
   })
@@ -82,21 +82,35 @@ function calendar_move(element){
       },
       function () {
         alert("読み込み失敗");
+        location.reload();
   });
 }
 
-
-function create_schedule(element){
-  selected_id = element.id
-  selected_date_list = selected_id.split("_")
-  selected_year = selected_date_list[0]
-  selected_month = selected_date_list[1]
-  selected_date = selected_date_list[2]
-  console.log(selected_year)
-  console.log(selected_month)
-  console.log(selected_date)
+function create_schedule(){
+  data = {
+    "username"    : username,
+    "title"       : $("#title_input").val(),
+    "start_date"  : $("#start_date_input").val(),
+    "start_time"  : $("#start_time_input").val(),
+    "finish_date" : $("#finish_date_input").val(),
+    "finish_time" : $("#finish_time_input").val(),
+    "category"    : $("#category_list").val(),
+    "description" : $("#description_input").val()
+  }
+  $.ajax({
+      url : "calen/create_schedule",
+      data: data,
+      type:'POST',
+  })
+  .then(
+      function (data) {
+        console.log(data);
+        alert(data["message"])
+      },
+      function () {
+        alert("読み込み失敗");
+  });
 }
-
 
 $('#schedule_modal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
@@ -104,6 +118,9 @@ $('#schedule_modal').on('show.bs.modal', function (event) {
   var modal = $(this)
   modal.find('.modal-title').text('New message to ' + recipient)
   modal.find('.modal-body input').val(recipient)
+  for(var i = 0; i < category_list.length; i++){
+    $("#categories").append("<option value="+category_list[i]+">"+category_list[i]+"<option>")
+  }
 })
 
 function display_time_picker(){
@@ -197,3 +214,7 @@ function check_user_login_statement(){
     $('.js-modal').fadeIn();
   }
 };
+
+$(document).on('change', 'input[name=password]', function () {
+
+});

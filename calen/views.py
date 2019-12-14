@@ -53,33 +53,50 @@ def index(request):
     return render(request, "calen/index.html", res)
 
 @csrf_exempt
-def create_shedule(request):
+def create_schedule(request):
     res = {}
-    user_id     = User.objects.get(username = request.POST.get('user')).id
+    user_id     = User.objects.get(username = request.POST.get('username')).id
     category    = request.POST.get('category')
     title       = request.POST.get('title')
     description = request.POST.get('description')
+    start_date  = datetime.datetime.strptime(request.POST.get('start_date'), '%Y/%m/%d')
+    print(start_date)
     start_time  = request.POST.get('start_time')
+    finish_date = datetime.datetime.strptime(request.POST.get('finish_date'), '%Y/%m/%d')
+    print(finish_date)
     finish_time = request.POST.get('finish_time')
-
+    print("---------------------------")
     print(Categories.objects.filter(
         category = category,
         user_id  = user_id
     ))
-    if Categories.objects.filter(
-        category = category,
-        user_id  = user_id
-    ):
-        Categories.objects.create(category = category)
-
-    Schedule.objects.create(
-        user_id     = user_id,
-        category    = category,
-        title       = title,
-        description = description,
-        start_time  = start_time,
-        finish_time = finish_time
-    )
+    try:
+        if Categories.objects.filter(
+            category = category,
+            user_id  = user_id
+        ):
+            print("カテゴリーの重複がある")
+        else:
+            print("カテゴリーの重複がない")
+            Categories.objects.create(
+                category = category,
+                user_id  = User.objects.get(username = request.POST.get('username'))
+            )
+        print("スケジュール登録します")
+        Schedule.objects.create(
+            user_id     = User.objects.get(username = request.POST.get('username')),
+            category_id = Categories.objects.get(category = category),
+            title       = title,
+            description = description,
+            start_date  = start_date,
+            start_time  = start_time,
+            finish_date = finish_date,
+            finish_time = finish_time
+        )
+        res["message"]="create schedule successed"
+    except Exception as e:
+        print(e)
+        res["message"]=e
     return JsonResponse(res)
 
 @csrf_exempt
@@ -88,7 +105,7 @@ def get_calendar(request):
     display_year    = int(request.POST["display_year"])
     display_month   = int(request.POST["display_month"])
     display_date    = int(request.POST["display_date"])
-    if request.POST["type"]=="forward":
+    if request.POST["type"] == "forward":
         tar_calendar,tar_year,tar_month = get_forward_calendar(display_year, display_month)
     else:
         tar_calendar,tar_year,tar_month = get_before_calendar(display_year, display_month)
@@ -102,6 +119,11 @@ def get_calendar(request):
         "display_month" : str(tar_month),
     })
     return JsonResponse(res)
+
+# カテゴリをまとめたり消したりする機能をつけたい。
+@csrf_exempt
+def edit_category(request):
+    return True
 
 def get_before_calendar(year, month):
     if month == 1:

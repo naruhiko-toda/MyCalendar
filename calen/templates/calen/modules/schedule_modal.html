@@ -2,25 +2,28 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="btn btn-primary btn-sm" id = "register_schedule_button">保存</button>
+          <button type="button" class="btn btn-primary btn-sm" id="register_schedule_button" onclick="create_schedule();">保存</button>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-header">
-            <input class="form-control form-control-lg" type="text" placeholder="タイトルを入力">
+            <input id="title_input" class="form-control form-control-lg" type="text" placeholder="タイトルを入力">
         </div>
         <div class="modal-body">
           <div class="schedule_start_input">
-            <input type="text" class="start_date" onchange="check_time();">
-            <input type="text" class="start_time" onchange="check_time();">
+            <input id="start_date_input" type="text" class="start_date" onchange="check_time();">
+            <input id="start_time_input" type="text" class="start_time" onchange="check_time();">
           </div>
           <div class="schedule_finish_input">
-            <input type="text" class="finish_date" onchange="check_time();">
-            <input type="text" class="finish_time" onchange="check_time();">
+            <input id="finish_date_input" type="text" class="finish_date" onchange="check_time();">
+            <input id="finish_time_input" type="text" class="finish_time" onchange="check_time();">
           </div>
-            <input type="text" class="form-control" id="recipient-name">
-            <textarea class="form-control" id="message-text" placeholder="メモの追加"></textarea>
+          <label>カテゴリ</label>
+          <input type="text" class="form-control" id="category_list" list="categories">
+          <datalist id="categories">
+          </datalist>
+          <textarea id="description_input" class="form-control" placeholder="メモの追加"></textarea>
         </div>
     </div>
   </div>

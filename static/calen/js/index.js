@@ -10,12 +10,12 @@ function create_calendar(){
           if(calendar["value"][i][j] != 0){
             $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+1)+")").append("\
               <td class='calen_top'\
-              id="+display_time["display_year"]+"_"+display_time["display_month"]+"_"+calendar["value"][i][j]+">\
+              id="+display_time["display_year"]+"-"+display_time["display_month"]+"-"+calendar["value"][i][j]+">\
               "+calendar["value"][i][j]+"</td>"
             )
             $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+2)+")").append("\
               <td class='calen_bottom'\
-              id="+display_time["display_year"]+"_"+display_time["display_month"]+"_"+calendar["value"][i][j]+"\
+              id="+display_time["display_year"]+"-"+display_time["display_month"]+"-"+calendar["value"][i][j]+"\
               onclick='create_schedule(this);'>\
               </td>"
             )
@@ -52,7 +52,7 @@ function display_year_month(year,month){
 }
 
 function draw_today(this_year,this_month,this_date){
-  $("#"+this_year+"_"+this_month+"_"+this_date).css("background-color","#8ffbff")
+  $("#"+this_year+"-"+this_month+"-"+this_date).css("background-color","#8ffbff")
 }
 
 function calendar_move(element){
@@ -204,6 +204,14 @@ function check_user_login_statement(){
   }
 };
 
+function display_schedule(schedules){
+  console.log(schedules);
+  for(var i=0; i < schedules.length; i++){
+    console.log(schedules[i]);
+  }
+}
+
+// onchange属性を付与する
 $(document).on('change', 'input[name=password]', function () {
 
 });

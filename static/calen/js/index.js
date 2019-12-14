@@ -16,7 +16,8 @@ function create_calendar(){
             $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+2)+")").append("\
               <td class='calen_bottom'\
               id="+display_time["display_year"]+"_"+display_time["display_month"]+"_"+calendar["value"][i][j]+"\
-              onclick='create_schedule(this);'></td>"
+              onclick='create_schedule(this);'>\
+              </td>"
             )
           }else{
             $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+1)+")").append("\
@@ -35,8 +36,12 @@ function create_calendar(){
       $(".calendar_day tbody").empty();
       $(".calendar_day tbody").append("<tr></tr>")
       for(var j=0; j<7; j++){
-        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i+1)+")").append("<td>"+calendar["value"][i]+"</td>")
-        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i)+")").append("<td></td>")
+        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i+1)+")").append("\
+          <td>"+calendar["value"][i]+"</td>"
+        )
+        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i)+")").append("\
+          <td></td>"
+        )
       }
       break;
   }

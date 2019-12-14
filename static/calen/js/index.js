@@ -191,11 +191,9 @@ function check_time(){
 }
 
 function check_user_login_statement(){
-  // if user is not login
-  $('.js-modal').fadeIn();
-  $('.js-modal-close').on('click',function(){
+  if(login){
     $('.js-modal').fadeOut();
-  // if user is login
-    return false;
-  });
-}
+  }else{
+    $('.js-modal').fadeIn();
+  }
+};

@@ -1,3 +1,4 @@
+
 function post_sign_in_info(){
   $.ajax({
       url: "calen/sign_in",
@@ -6,7 +7,7 @@ function post_sign_in_info(){
   })
   .then(
       function (data) {
-        alert(data);
+        check_user_login_statement()
       },
       function () {
         alert("読み込み失敗");
@@ -21,7 +22,9 @@ function post_sign_up_info(){
   })
   .then(
       function (data) {
+        console.log(user)
         alert(data["message"]);
+
       },
       function () {
         alert("読み込み失敗");

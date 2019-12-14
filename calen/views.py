@@ -6,6 +6,7 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http.response import JsonResponse
+from django.core import serializers
 
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
@@ -16,6 +17,16 @@ calendar.setfirstweekday(6)
 
 def index(request):
     res = {}
+    if request.GET.get('username'):
+        res["user"] = json.dumps({
+            "login" : True,
+            "username" : str(request.GET.get('username'))
+        })
+    else:
+        res["user"] = json.dumps({
+            "login" : False,
+            "username" : None
+        })
     now = datetime.datetime.now()
     #デフォルトで今月の月間カレンダーを表示する
     default_calendar = calendar.monthcalendar(now.year, now.month)
@@ -51,7 +62,6 @@ def get_calendar(request):
         "display_year":str(tar_year),
         "display_month":str(tar_month),
     })
-    res["status"]=200
     return JsonResponse(res)
 
 
@@ -86,6 +96,8 @@ def sign_up(request):
         print(password)
         user = authenticate(username=username, password=password)
         login(request, user)
+        user = str(user)
+        res["user"] = user
         res["message"] = "sign up successed!!!"
         return JsonResponse(res)
     res["message"] = "sign up failed!!!!"
@@ -99,6 +111,8 @@ def sign_in(request):
         username = form.cleaned_data.get('username')
         user = User.objects.get(username=username)
         login(request, user)
+        user = str(user)
+        res["user"] = user
         res["message"] = "sing in successed!!!!!"
         return JsonResponse(res)
     res["message"] = "sign in failed!!!!!!"

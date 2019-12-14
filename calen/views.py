@@ -7,6 +7,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http.response import JsonResponse
 
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
+from django.views.generic import CreateView
+from . forms import UserCreateForm, LoginForm
+
 calendar.setfirstweekday(6)
 
 def index(request):
@@ -23,7 +28,8 @@ def index(request):
         "display_year":str(now.year),
         "display_month":str(now.month),
     })
-    print(res)
+    res["sign_in_form"] = LoginForm()
+    res["sign_up_form"] = UserCreateForm()
     return render(request, "calen/index.html", res)
 
 @csrf_exempt
@@ -46,7 +52,6 @@ def get_calendar(request):
         "display_month":str(tar_month),
     })
     res["status"]=200
-    print(res)
     return JsonResponse(res)
 
 
@@ -67,3 +72,34 @@ def get_forward_calendar(year, month):
         tar_year = year
         tar_month = month + 1
     return calendar.monthcalendar(tar_year, tar_month),tar_year,tar_month
+
+@csrf_exempt
+def sign_up(request):
+    form = UserCreateForm(data=request.POST)
+    print(request.POST)
+    res = {}
+    if form.is_valid():
+        form.save()
+        username = form.cleaned_data.get('username')
+        print(username)
+        password = form.cleaned_data.get('password1')
+        print(password)
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        res["message"] = "sign up successed!!!"
+        return JsonResponse(res)
+    res["message"] = "sign up failed!!!!"
+    return JsonResponse(res)
+
+@csrf_exempt
+def sign_in(request):
+    form = LoginForm(data=request.POST)
+    res = {}
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        user = User.objects.get(username=username)
+        login(request, user)
+        res["message"] = "sing in successed!!!!!"
+        return JsonResponse(res)
+    res["message"] = "sign in failed!!!!!!"
+    return JsonResponse(res)

@@ -3,16 +3,45 @@
   <div class="modal__content">
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-signin-tab" data-toggle="tab" href="#nav-signin" role="tab" aria-controls="nav-signin" aria-selected="true">Sign in</a>
-        <a class="nav-item nav-link" id="nav-signup-tab" data-toggle="tab" href="#nav-signup" role="tab" aria-controls="nav-signup" aria-selected="false">Sign up</a>
+        <a class="nav-item nav-link active" id="nav-signin-tab" data-toggle="tab" href="#nav-signin" role="tab" aria-controls="nav-signin" aria-selected="true">ユーザーの方</a>
+        <a class="nav-item nav-link" id="nav-signup-tab" data-toggle="tab" href="#nav-signup" role="tab" aria-controls="nav-signup" aria-selected="false">初めての方</a>
       </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-signin" role="tabpanel" aria-labelledby="nav-signin-tab">
-        ログインフォームが出ます
+        {% if sign_in_form.errors  %}
+        <p>ユーザーID, パスワードが一致しません．</p>
+        {% endif %}
+        <form id="sign_in_form">
+          {% csrf_token %}
+          <label>ユーザーID</label>
+          {{ sign_in_form.username }}
+          {{ sign_in_form.username.errors }}
+          <label>パスワード</label>
+          {{ sign_in_form.password }}
+          {{ sign_in_form.password.errors }}
+          <button onclick="post_sign_in_info();">ログイン</button>
+        </form>
       </div>
       <div class="tab-pane fade" id="nav-signup" role="tabpanel" aria-labelledby="nav-signup-tab">
-        ユーザー登録フォームが出ます
+        <form id="sign_up_form">
+          {% csrf_token %}
+          <label>ユーザーID</label>
+          <!-- 半角アルファベット、半角数字、@/./+/-/_ で150文字以下 -->
+          {{ sign_up_form.username }}
+          {{ sign_up_form.username.errors }}
+          <label>パスワード</label>
+          <!-- idと似ているパスワードは不可 -->
+          <!-- パスワードは最低 8文字以上 -->
+          <!-- よく使われるパスワードは不可 -->
+          <!-- 数字だけのパスワードは不可 -->
+          {{ sign_up_form.password1 }}
+          {{ sign_up_form.password1.errors }}
+          <label>パスワード(確認)</label>
+          {{ sign_up_form.password2 }}
+          {{ sign_up_form.password2.errors }}
+          <button onclick="post_sign_up_info();">登録</button>
+        </form>
       </div>
     </div>
     <a class="js-modal-close" href="">閉じる</a>

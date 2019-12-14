@@ -60,29 +60,19 @@ def create_schedule(request):
     title       = request.POST.get('title')
     description = request.POST.get('description')
     start_date  = datetime.datetime.strptime(request.POST.get('start_date'), '%Y/%m/%d')
-    print(start_date)
     start_time  = request.POST.get('start_time')
     finish_date = datetime.datetime.strptime(request.POST.get('finish_date'), '%Y/%m/%d')
-    print(finish_date)
     finish_time = request.POST.get('finish_time')
-    print("---------------------------")
-    print(Categories.objects.filter(
-        category = category,
-        user_id  = user_id
-    ))
     try:
         if Categories.objects.filter(
             category = category,
             user_id  = user_id
         ):
-            print("カテゴリーの重複がある")
         else:
-            print("カテゴリーの重複がない")
             Categories.objects.create(
                 category = category,
                 user_id  = User.objects.get(username = request.POST.get('username'))
             )
-        print("スケジュール登録します")
         Schedule.objects.create(
             user_id     = User.objects.get(username = request.POST.get('username')),
             category_id = Categories.objects.get(category = category),

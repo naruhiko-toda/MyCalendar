@@ -33,7 +33,8 @@
       var user = {{ user | safe }};
       var login = user["login"];
       var username = user["username"];
-      console.log(login)
+
+      var categories = {{ categories | safe }}
 
       var now = new Date();
       var this_year     = now.getFullYear();
@@ -45,7 +46,7 @@
 
       var calendar = {{ calendar | safe }}
       var week_cnt = calendar["value"].length;
-      
+
       var display_time = {{ display_time | safe }}
       $(document).ready(function(){
         display_year_month(this_year,this_month);
@@ -53,6 +54,9 @@
         draw_today(this_year,this_month,this_date);
         check_user_login_statement();
         display_time_picker();
+        for(var i = 0; i < categories.length; i++){
+          $("#categories").append("<option value="+categories[i]+">"+categories[i]+"</option>")
+        }
       });
 
     </script>

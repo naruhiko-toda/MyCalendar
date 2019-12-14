@@ -57,11 +57,11 @@ function draw_today(this_year,this_month,this_date){
 
 function calendar_move(element){
   data = {
-    "display_date":parseInt(display_time["display_date"]),
-    "display_month":parseInt(display_time["display_month"]),
-    "display_year":parseInt(display_time["display_year"]),
-    "type": element.value,
-    "format":calendar["type"]
+    "display_date"  : parseInt(display_time["display_date"]),
+    "display_month" : parseInt(display_time["display_month"]),
+    "display_year"  : parseInt(display_time["display_year"]),
+    "type"          : element.value,
+    "format"        : calendar["type"]
   }
   console.log(data)
   $.ajax({
@@ -98,9 +98,9 @@ function create_schedule(){
     "description" : $("#description_input").val()
   }
   $.ajax({
-      url : "calen/create_schedule",
-      data: data,
-      type:'POST',
+      url  : "calen/create_schedule",
+      data : data,
+      type :'POST',
   })
   .then(
       function (data) {
@@ -111,17 +111,6 @@ function create_schedule(){
         alert("読み込み失敗");
   });
 }
-
-$('#schedule_modal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var recipient = button.data('whatever') // Extract info from data-* attributes
-  var modal = $(this)
-  modal.find('.modal-title').text('New message to ' + recipient)
-  modal.find('.modal-body input').val(recipient)
-  for(var i = 0; i < category_list.length; i++){
-    $("#categories").append("<option value="+category_list[i]+">"+category_list[i]+"<option>")
-  }
-})
 
 function display_time_picker(){
   $(".start_date").datepicker();

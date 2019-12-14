@@ -19,16 +19,24 @@ calendar.setfirstweekday(6)
 def index(request):
     res = {}
 
+    categories = []
+
     if request.GET.get('username'):
         res["user"] = json.dumps({
             "login"     : True,
             "username"  : str(request.GET.get('username'))
         })
+        user_id = User.objects.get(username = str(request.GET.get('username'))).id
+        category_object = Categories.objects.filter(user_id = user_id)
+        for c in category_object:
+            categories.append(c.category)
     else:
         res["user"] = json.dumps({
             "login"     : False,
             "username"  : None
         })
+
+    res["categories"] = str(categories)
 
     now = datetime.datetime.now()
     #デフォルトで今月の月間カレンダーを表示する
@@ -47,8 +55,6 @@ def index(request):
     res["sign_in_form"] = LoginForm()
     res["sign_up_form"] = UserCreateForm()
 
-    caregories = []
-    print(Categories.objects.all())
     print(res)
     return render(request, "calen/index.html", res)
 
@@ -68,6 +74,7 @@ def create_schedule(request):
             category = category,
             user_id  = user_id
         ):
+            print()
         else:
             Categories.objects.create(
                 category = category,

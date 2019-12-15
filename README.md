@@ -1,4 +1,14 @@
 # MyCalendar
+## 開発環境
+Django==2.2.8<br>
+Python==3.7.0
+
+# 使用方法
+(作業ディレクトリで)<br>
+$ git clone https://github.com/nr27bypphy/MyCalendar.git<br>
+$ pip install -r requirements.txt<br>
+$ python manage.py runserver
+
 ## これは何
 
 あったらいいなと思うカレンダー

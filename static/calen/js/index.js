@@ -259,12 +259,6 @@ function to_day_calendar(year, month, date){
         calendar = JSON.parse(data["calendar"])
         console.log(display_time)
         console.log(calendar)
-        display_calen_title(
-          display_time["display_year"],
-          display_time["display_month"],
-          display_time["display_date"],
-          calendar["type"]
-        )
         $(".calendar_day").show();
         $(".calendar_month").hide();
         $("#switch_button").val("month");
@@ -299,12 +293,6 @@ function to_month_calendar(year, month, date){
         calendar = JSON.parse(data["calendar"])
         console.log(display_time)
         console.log(calendar)
-        display_calen_title(
-          display_time["display_year"],
-          display_time["display_month"],
-          display_time["display_date"],
-          calendar["type"]
-        )
         $(".calendar_day").hide();
         $(".calendar_month").show();
         $("#switch_button").val("day");

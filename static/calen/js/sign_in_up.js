@@ -22,7 +22,6 @@ function post_sign_up_info(){
   })
   .then(
       function (data) {
-        console.log(user)
         alert(data["message"]);
 
       },

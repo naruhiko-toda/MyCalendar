@@ -18,7 +18,6 @@ function create_schedule(){
   })
   .then(
     function (data) {
-      console.log(data);
       create_calendar();
     },
     function () {
@@ -47,7 +46,6 @@ function edit_schedule(schedule){
   })
   .then(
     function (data) {
-      console.log(data);
       schedule["title"]       = $("#title_input").val()
       schedule["roop_type"]   = $("#roop_type_input").val()
       schedule["start_date"]  = $("#start_date_input").val()
@@ -57,15 +55,12 @@ function edit_schedule(schedule){
       schedule["category"]    = $("#category_list").val()
       schedule["place"]       = $("#place_input").val()
       schedule["description"] = $("#description_input").val()
-      console.log("変更前",schedules)
       for(var i = 0; i < schedules.length; i++) {
         if(schedules[i]["id"] === schedule["id"]) {
           number = i;
         }
       }
-      console.log(number)
       schedules[number] = schedule
-      console.log("変更後",schedules)
       create_calendar();
     },
     function () {
@@ -84,10 +79,7 @@ function delete_schedule(schedule){
   })
   .then(
     function (data) {
-      console.log(data);
-      console.log("変更前",schedules)
       schedules = schedules.filter(n => n["id"] !== schedule["id"])
-      console.log("変更後",schedules)
       create_calendar();
     },
     function () {

@@ -203,7 +203,6 @@ def delete_schedule(request):
     try:
         schedule_instance = Schedule.objects.get(id = schedule_id)
         schedule_instance.delete()
-        print(Schedule.objects.all())
         res["message"]="edit schedule successed"
     except Exception as e:
         print(e)
@@ -218,7 +217,6 @@ def get_calendar(request):
     display_month   = int(request.POST["display_month"])
     display_date    = int(request.POST["display_date"])
     if request.POST["type"] == "forward":
-        print(request.POST["format"])
         tar_calendar, tar_year, tar_month, tar_date = get_forward_calendar(
             display_year,
             display_month,
@@ -251,7 +249,6 @@ def get_calendar(request):
         "display_month" : str(tar_month),
         "display_date"  : str(tar_date),
     })
-    print(res)
     return JsonResponse(res)
 
 # カテゴリをまとめたり消したりする機能をつけたい。
@@ -321,7 +318,6 @@ def get_forward_calendar(year, month, date, type):
 @csrf_exempt
 def sign_up(request):
     form = UserCreateForm(data=request.POST)
-    print(request.POST)
     res = {}
     if form.is_valid():
         form.save()

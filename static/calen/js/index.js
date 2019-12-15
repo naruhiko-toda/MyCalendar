@@ -62,7 +62,6 @@ function draw_today(this_year,this_month,this_date){
 
 function display_time_picker(){
   $(".start_date").datepicker();
-  console.log(this_hour)
   if(this_hour==23){
     $(".start_date").val(this_year+'/'+this_month+'/'+parseInt(this_date+1));
     start_default = this_hour - 23
@@ -105,7 +104,6 @@ function display_time_picker(){
 }
 
 function insert_data_for_edit(schedule){
-  console.log(schedule)
   $("#title_input").val(schedule["title"]);
   $("#roop_type_input").val(schedule["roop_type"]);
   $(".start_date").val(schedule["start_date"]);
@@ -243,12 +241,10 @@ function calc_position(start_time,finish_time){
 }
 
 function select_day(element){
-  console.log(element);
   selected_date_list   = element.id.split("-");
   selected_year 　　　  = selected_date_list[0];
   selected_month       = selected_date_list[1];
   selected_date        = selected_date_list[2];
-  console.log(selected_date)
   to_day_calendar(selected_year, selected_month, selected_date);
 }
 

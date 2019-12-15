@@ -1,7 +1,6 @@
 function switch_calendar(){
   element = $("#switch_button");
   format = $("#switch_button").val();
-  console.log(format)
   switch (format) {
     case "day":
       to_day_calendar(this_year, this_month, this_date);
@@ -13,7 +12,6 @@ function switch_calendar(){
 }
 
 function to_day_calendar(year, month, date){
-  console.log(date)
   data = {
     "display_year"  : year,
     "display_month" : month,
@@ -21,7 +19,6 @@ function to_day_calendar(year, month, date){
     "type"          : "switch",
     "format"        : "day"
   }
-  console.log(data)
   $.ajax({
       url : "calen/get_calendar",
       data: data,
@@ -31,7 +28,6 @@ function to_day_calendar(year, month, date){
     function (data) {
       display_time = JSON.parse(data["display_time"])
       calendar = JSON.parse(data["calendar"])
-      console.log(calendar)
       $(".calendar_day").show();
       $(".calendar_month").hide();
       $("#switch_button").val("month");
@@ -45,7 +41,6 @@ function to_day_calendar(year, month, date){
 }
 
 function to_month_calendar(year, month, date){
-  console.log(year,month,date)
   data = {
     "display_year"  : year,
     "display_month" : month,
@@ -53,7 +48,6 @@ function to_month_calendar(year, month, date){
     "type"          : "switch",
     "format"        : "month"
   }
-  console.log(data)
   $.ajax({
       url : "calen/get_calendar",
       data: data,
@@ -83,7 +77,6 @@ function calendar_move(element){
     "type"          : element.value,
     "format"        : calendar["type"]
   }
-  console.log(data)
   $.ajax({
     url : "calen/get_calendar",
     data: data,
@@ -91,11 +84,8 @@ function calendar_move(element){
   })
   .then(
     function (data) {
-      console.log(data)
       display_time = JSON.parse(data["display_time"])
       calendar = JSON.parse(data["calendar"])
-      console.log(display_time)
-      console.log(calendar)
       display_calen_title(
         display_time["display_year"],
         display_time["display_month"],

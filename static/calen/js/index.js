@@ -26,10 +26,12 @@ function create_calendar(){
     case "day":
       console.log("日毎のカレンダーです")
       $(".calendar_day tbody").empty();
-      for(var j=0; j<7; j++){
-        $(".calendar_day tbody tr").append("\
-          <td>"+calendar["value"][i]+"</td>"
-        )
+      for(var i=0; i<48; i++){
+        $(".calendar_day tbody").append("<tr class='daily_calendar_row'></tr>");
+        $(".calendar_day tbody tr:nth-child("+parseInt(i+1)+")").append("<td class='calendar'><div class='timeline'></div></td>");
+      }
+      for(var i=1; i<24; i++){
+        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i+1)+") .timeline").html(i+":00")
       }
       break;
   }

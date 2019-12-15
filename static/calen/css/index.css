@@ -8,16 +8,15 @@
 table{
   width: 100%;
   text-align: center;
-
 }
+
 td{
   width: 14.2857%;
   vertical-align: top;
 }
 .calendar{
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
 }
-
 
 .arrow{
   display:  inline-block;
@@ -122,4 +121,21 @@ td{
   color: #FFF;
   border-radius: 20%;
   margin-bottom: 1px;
+}
+
+.calendar_day table{
+  width: 85%;
+  margin-left: 15%;
+}
+.daily_calendar_row{
+  height: 30px;
+}
+
+.calendar_day tbody td{
+  position: relative;
+}
+.timeline{
+  position: absolute;
+  top: -13px;
+  left: -15%;
 }

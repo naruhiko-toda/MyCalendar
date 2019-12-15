@@ -2,6 +2,13 @@
   box-sizing: border-box;
 }
 
+a{
+  color: black;
+}
+
+a:hover{
+  color: #123456;
+}
 footer{
   width: 100%;
   position: fixed;
@@ -95,6 +102,7 @@ td{
   border-radius: 10%;
   height: 29px;
   margin-bottom: 1px;
+  text-align: left;
 }
 
 
@@ -122,6 +130,10 @@ td{
 
 #sign_up_complete_button, #sign_in_complete_button{
   margin-top: 10px;
+}
+
+#start_time_input, #finish_time_input{
+  width:90%;
 }
 
 .btn_b {

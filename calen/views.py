@@ -218,6 +218,7 @@ def get_calendar(request):
     display_month   = int(request.POST["display_month"])
     display_date    = int(request.POST["display_date"])
     if request.POST["type"] == "forward":
+        print(request.POST["format"])
         tar_calendar, tar_year, tar_month, tar_date = get_forward_calendar(
             display_year,
             display_month,
@@ -268,7 +269,7 @@ def get_before_calendar(year, month, date, type):
             tar_year    = year
             tar_month   = month - 1
             tar_date    = date
-        return calendar.monthcalendar(tar_year, tar_month),tar_year,tar_month
+        return calendar.monthcalendar(tar_year, tar_month), tar_year, tar_month, tar_date
     else:
         if date == 1:
             if month == 1:
@@ -295,7 +296,7 @@ def get_forward_calendar(year, month, date, type):
             tar_year    = year
             tar_month   = month + 1
             tar_date    = date
-        return calendar.monthcalendar(tar_year, tar_month),tar_year,tar_month, tar_date
+        return calendar.monthcalendar(tar_year, tar_month), tar_year, tar_month, tar_date
     else:
         if month == 12:
             if date == 31:

@@ -1,3 +1,21 @@
+function check_user_login_statement(){
+  if(login){
+    $('.js-modal').fadeOut();
+  }else{
+    $('.js-modal').fadeIn();
+  }
+};
+
+function display_calen_title(year,month,date,type){
+  switch (type) {
+    case "month":
+      $(".calen_title").html(year+"年"+month+" 月")
+      break;
+    case "day":
+      $(".calen_title").html(year+"年"+month+" 月"+date+" 日")
+  }
+}
+
 function create_calendar(){
   switch( calendar["type"] ){
     case "month":
@@ -36,16 +54,6 @@ function create_calendar(){
   }
   display_calen_title(display_time["display_year"], display_time["display_month"], display_time["display_date"], calendar["type"]);
   display_schedule(schedules);
-}
-
-function display_calen_title(year,month,date,type){
-  switch (type) {
-    case "month":
-      $(".calen_title").html(year+"年"+month+" 月")
-      break;
-    case "day":
-      $(".calen_title").html(year+"年"+month+" 月"+date+" 日")
-  }
 }
 
 function draw_today(this_year,this_month,this_date){
@@ -99,11 +107,13 @@ function display_time_picker(){
 function insert_data_for_edit(schedule){
   console.log(schedule)
   $("#title_input").val(schedule["title"]);
-  $("#category_list").val(schedule["category_name"]);
+  $("#roop_type_input").val(schedule["roop_type"]);
   $(".start_date").val(schedule["start_date"]);
   $(".start_time").val(schedule["start_time"]);
   $(".finish_date").val(schedule["finish_date"]);
   $(".finish_time").val(schedule["finish_time"]);
+  $("#category_list").val(schedule["category_name"]);
+  $("#place_input").val(schedule["place"]);
   $("#description_input").val(schedule["description"]);
   $('#register_schedule_button').off('click',create_schedule );
   $('#register_schedule_button').on('click',function(){
@@ -153,36 +163,24 @@ function check_time(){
   }
 }
 
-function check_user_login_statement(){
-  if(login){
-    $('.js-modal').fadeOut();
-  }else{
-    $('.js-modal').fadeIn();
-  }
-};
-
 function display_schedule(schedules){
   switch (calendar["type"]) {
     case "month":
-    console.log(schedules);
       for(var i=0; i < schedules.length; i++){
         if(schedules[i]["roop_type"] == "ev_day"){
           $(".has_day").append("\
           <li class='schedule_month'>"+schedules[i]["title"]+"</li>\
           ");
         }else if(schedules[i]["roop_type"] == "ev_week"){
-          console.log("毎週のやつ")
           this_day_order = new Date(schedules[i]["start_date"]).getDay()
-          console.log(this_day_order)
           for(var j=0; j<calendar["value"].length; j++){
             if(calendar["value"][j][this_day_order] != 0){
-              $(".calendar_month tbody tr:nth-child("+j+") td:nth-child("+parseInt(this_day_order+1)+")").append(
+              $(".calendar_month tbody tr:nth-child("+parseInt(j+1)+") td:nth-child("+parseInt(this_day_order+1)+")").append(
                 "<li class='schedule_month'>"+schedules[i]["title"]+"</li>"
               )
             }
           }
         }else{
-          // console.log("そのほかのやつ")
           $("#"+schedules[i]["start_date"]).append("\
             <li class='schedule_month'>"+schedules[i]["title"]+"</li>\
           ");
@@ -215,7 +213,14 @@ function display_schedule(schedules){
       for(var i=0; i < display_schedules.length; i++){
         calc_position(display_schedules[i]["start_time"], display_schedules[i]["finish_time"]);
         period = finish_position - start_position
-        $(".calendar_day tbody").append("<div id='schedule_"+i+"' class='schedule_day' onclick='insert_data_for_edit("+JSON.stringify(display_schedules[i])+");' data-toggle='modal' data-target='#schedule_modal'>"+display_schedules[i]["title"]+"</div>")
+        $(".calendar_day tbody").append(
+          "\
+          <div id='schedule_"+i+"'\
+          class='schedule_day'\
+          onclick='insert_data_for_edit("+JSON.stringify(display_schedules[i])+");'\
+          data-toggle='modal' data-target='#schedule_modal'>\
+          "+display_schedules[i]["title"]+"<br><small>　　　　:"+display_schedules[i]["place"]+"</small>"+"</div>"
+        )
         $("#schedule_"+i).css("top",(start_position) * 30 + 56);
         $("#schedule_"+i).css("height",period * 29);
       }
@@ -271,4 +276,8 @@ function check_password(){
       $("#sign_up_complete_button").prop("disabled", true);
     }
   });
+}
+
+function edit_category(){
+  alert("未実装です。modalが出てカテゴリ一を作ったり消したりできるものを作りたかったです。")
 }

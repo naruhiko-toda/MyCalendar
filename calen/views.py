@@ -171,6 +171,20 @@ def edit_schedule(request):
     return JsonResponse(res)
 
 @csrf_exempt
+def delete_schedule(request):
+    res = {}
+    schedule_id = request.POST.get('schedule_id')
+    try:
+        schedule_instance = Schedule.objects.get(id = schedule_id)
+        schedule_instance.delete()
+        print(Schedule.objects.all())
+        res["message"]="edit schedule successed"
+    except Exception as e:
+        print(e)
+        res["message"]=e
+    return JsonResponse(res)
+
+@csrf_exempt
 def get_calendar(request):
     res={}
     # 送信時点で表示している年、月、日

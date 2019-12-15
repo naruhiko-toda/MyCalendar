@@ -152,3 +152,8 @@ td{
   top: -13px;
   left: -15%;
 }
+
+#delete_schedule_button{
+  display: none;
+  margin-left: 20px;
+}

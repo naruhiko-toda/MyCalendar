@@ -158,6 +158,28 @@ function edit_schedule(schedule){
   });
 }
 
+function delete_schedule(schedule){
+  data = {
+    schedule_id : schedule["id"]
+  }
+  $.ajax({
+      url  : "calen/delete_schedule",
+      data : data,
+      type :'POST',
+  })
+  .then(
+      function (data) {
+        console.log(data);
+        console.log("変更前",schedules)
+        schedules = schedules.filter(n => n["id"] !== schedule["id"])
+        console.log("変更後",schedules)
+        create_calendar();
+      },
+      function () {
+        alert("読み込み失敗");
+  });
+}
+
 function display_time_picker(){
   $(".start_date").datepicker();
   console.log(this_hour)
@@ -214,7 +236,11 @@ function insert_data_for_edit(schedule){
   $('#register_schedule_button').off('click',create_schedule );
   $('#register_schedule_button').on('click',function(){
     edit_schedule(schedule);
-  } );
+  });
+  $('#delete_schedule_button').show();
+  $('#delete_schedule_button').on('click',function(){
+    delete_schedule(schedule);
+  });
 }
 
 function check_time(){

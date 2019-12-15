@@ -8,4 +8,5 @@ urlpatterns = [
     path('calen/sign_in'            , views.sign_in),
     path('calen/create_schedule'    , views.create_schedule),
     path('calen/edit_schedule'      , views.edit_schedule),
+    path('calen/delete_schedule'      , views.delete_schedule),
 ]

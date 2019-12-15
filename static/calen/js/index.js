@@ -39,10 +39,10 @@ function create_calendar(){
 function display_calen_title(year,month,date,type){
   switch (type) {
     case "month":
-      $(".this_year_ month").html(year+"年"+month+" 月")
+      $(".calen_title").html(year+"年"+month+" 月")
       break;
     case "day":
-      $(".this_year_ month").html(year+"年"+month+" 月"+date+" 日")
+      $(".calen_title").html(year+"年"+month+" 月"+date+" 日")
   }
 }
 

@@ -191,9 +191,27 @@ function display_schedule(schedules){
       break;
 
     case "day":
-      display_schedules = schedules.filter(
-        s => s["start_date"] === display_time["display_year"]+"-"+display_time["display_month"]+"-"+display_time["display_date"]
-      )
+      display_schedules = [];
+      for(var i=0; i < schedules.length; i++){
+        if(schedules[i]["roop_type"] == "ev_day"){
+          display_schedules.push(schedules[i])
+        }else if(schedules[i]["roop_type"] == "ev_week"){
+          schedule_day_order = new Date(schedules[i]["start_date"]).getDay()
+          displyay_day_order = new Date(
+            display_time["display_year"]+"-"+display_time["display_month"]+"-"+display_time["display_date"]
+          ).getDay()
+          if(schedule_day_order == displyay_day_order){
+            display_schedules.push(schedules[i])
+          }
+        }else{
+          this_day_schedules = schedules.filter(
+            s => s["start_date"] === display_time["display_year"]+"-"+display_time["display_month"]+"-"+display_time["display_date"]
+          )
+          for(var j=0; j < this_day_schedules.length; j++){
+            display_schedules.push(this_day_schedules[j])
+          }
+        }
+      }
       for(var i=0; i < display_schedules.length; i++){
         calc_position(display_schedules[i]["start_time"], display_schedules[i]["finish_time"]);
         period = finish_position - start_position

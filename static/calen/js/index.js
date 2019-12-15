@@ -4,32 +4,23 @@ function create_calendar(){
       $(".calendar_month tbody").empty();
       for(var i=0; i<calendar["value"].length; i++){
         $(".calendar_month tbody").append("<tr></tr>")
-        $(".calendar_month tbody").append("<tr></tr>")
         for(var j=0; j<7; j++){
           console.log(j)
           if(calendar["value"][i][j] != 0){
-            $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+1)+")").append("\
-              <td class='calen_top'\
-              id="+display_time["display_year"]+"-"+display_time["display_month"]+"-"+calendar["value"][i][j]+">\
+            $(".calendar_month tbody > tr:nth-child("+parseInt(i+1)+")").append("\
+              <td class='calender'\
+              id="+display_time["display_year"]+"-"+display_time["display_month"]+"-"+calendar["value"][i][j]+"\
+              onclick='to_day_calender(this);'>\
               "+calendar["value"][i][j]+"</td>"
             )
-            $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+2)+")").append("\
-              <td class='calen_bottom'\
-              id="+display_time["display_year"]+"-"+display_time["display_month"]+"-"+calendar["value"][i][j]+"\
-              onclick='create_schedule(this);'>\
-              </td>"
-            )
           }else{
-            $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+1)+")").append("\
-              <td class='calen_top'></td>"
-            )
-            $(".calendar_month tbody > tr:nth-child("+parseInt(2*i+2)+")").append("\
-              <td class='calen_bottom'></td>"
+            $(".calendar_month tbody > tr:nth-child("+parseInt(i+1)+")").append("\
+              <td class='calender'></td>"
             )
           }
         }
-        bottom_height = ($(window).height()-138-(27*week_cnt)) / week_cnt
-        $(".calen_bottom").css("height",bottom_height)
+        bottom_height = ($(window).height()-56-24-56) / week_cnt
+        $(".calender").css("height",bottom_height)
       }
       break;
     case "day":
@@ -208,7 +199,14 @@ function display_schedule(schedules){
   console.log(schedules);
   for(var i=0; i < schedules.length; i++){
     console.log(schedules[i]);
+    $("#"+schedules[i]["start_date"]).append("\
+      <li class='schedule'>"+schedules[i]["title"]+"</li>\
+    ")
   }
+}
+
+function to_day_calender(element){
+  
 }
 
 // onchange属性を付与する

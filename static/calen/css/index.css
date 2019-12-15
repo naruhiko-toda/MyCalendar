@@ -12,16 +12,12 @@ table{
 }
 td{
   width: 14.2857%;
+  vertical-align: top;
 }
-.calen_top{
-  border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+.calender{
+  border: 1px solid #ccc;
 }
-.calen_bottom{
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-}
+
 
 .arrow{
   display:  inline-block;
@@ -116,4 +112,14 @@ td{
     top: 50%;
     transform: translate(-50%,-50%);
     width: 90%;
+}
+
+.schedule{
+  list-style-type: none;
+  text-overflow: clip;
+  font-size: 0.3rem;
+  background-color: #78b73e;
+  color: #FFF;
+  border-radius: 20%;
+  margin-bottom: 1px;
 }

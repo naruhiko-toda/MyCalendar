@@ -12,24 +12,22 @@
     <title>calen</title>
   </head>
   <body>
-    <div id="wrapper">
-      <header>
-        {% include "./modules/header.html" %}
-      </header>
-      {% include "./modules/login_modal.html" %}
-      <div class="calendar_month">
-        {% include "./modules/calendar_month.html" %}
-      </div>
-      <div class="calendar_day">
-        {% include "./modules/calendar_day.html" %}
-      </div>
-      <div class="schedule_modal">
-        {% include "./modules/schedule_modal.html" %}
-      </div>
-      <footer>
-        {% include "./modules/footer.html" %}
-      </footer>
+    <header>
+      {% include "./modules/header.html" %}
+    </header>
+    {% include "./modules/login_modal.html" %}
+    <div class="calendar_month">
+      {% include "./modules/calendar_month.html" %}
     </div>
+    <div class="calendar_day">
+      {% include "./modules/calendar_day.html" %}
+    </div>
+    <div class="schedule_modal">
+      {% include "./modules/schedule_modal.html" %}
+    </div>
+    <footer>
+      {% include "./modules/footer.html" %}
+    </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script>
       var user = {{ user | safe }};

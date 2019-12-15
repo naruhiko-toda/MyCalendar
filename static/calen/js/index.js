@@ -25,7 +25,7 @@ function create_calendar(){
       break;
     case "day":
       $(".calendar_day tbody").empty();
-      for(var i=0; i<48; i++){
+      for(var i=0; i<50; i++){
         $(".calendar_day tbody").append("<tr class='daily_calendar_row'></tr>");
         $(".calendar_day tbody tr:nth-child("+parseInt(i+1)+")").append("<td class='calendar'><div class='timeline'></div></td>");
       }

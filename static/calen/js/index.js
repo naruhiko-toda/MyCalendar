@@ -24,6 +24,7 @@ function create_calendar(){
       draw_today(this_year,this_month,this_date);
       break;
     case "day":
+      console.log("日毎のカレンダーです")
       $(".calendar_day tbody").empty();
       for(var j=0; j<7; j++){
         $(".calendar_day tbody tr").append("\
@@ -32,7 +33,7 @@ function create_calendar(){
       }
       break;
   }
-  display_calen_title(this_year, this_month, this_date, calendar["type"]);
+  display_calen_title(display_time["display_year"], display_time["display_month"], display_time["display_date"], calendar["type"]);
   display_schedule(schedules);
 }
 
@@ -231,14 +232,15 @@ function switch_calendar(){
 function select_day(element){
   console.log(element);
   selected_date_list   = element.id.split("-");
-  selected_year 　　　  = start_date_list[0];
-  selected_month       = start_date_list[1];
-  selected_date        = start_date_list[2];
+  selected_year 　　　  = selected_date_list[0];
+  selected_month       = selected_date_list[1];
+  selected_date        = selected_date_list[2];
+  console.log(selected_date)
   to_day_calendar(selected_year, selected_month, selected_date);
 }
 
 function to_day_calendar(year, month, date){
-  console.log(year,month,date)
+  console.log(date)
   data = {
     "display_year"  : year,
     "display_month" : month,
@@ -254,10 +256,8 @@ function to_day_calendar(year, month, date){
   })
   .then(
       function (data) {
-        console.log(data)
         display_time = JSON.parse(data["display_time"])
         calendar = JSON.parse(data["calendar"])
-        console.log(display_time)
         console.log(calendar)
         $(".calendar_day").show();
         $(".calendar_month").hide();
@@ -288,11 +288,8 @@ function to_month_calendar(year, month, date){
   })
   .then(
       function (data) {
-        console.log(data)
         display_time = JSON.parse(data["display_time"])
         calendar = JSON.parse(data["calendar"])
-        console.log(display_time)
-        console.log(calendar)
         $(".calendar_day").hide();
         $(".calendar_month").show();
         $("#switch_button").val("day");

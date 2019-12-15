@@ -50,6 +50,7 @@ def index(request):
             categories.append(c.category)
 
         schedules = get_schedules(user_id, now.year, now.month, now.date)
+
     else:
         res["user"] = json.dumps({
             "login"     : False,
@@ -80,11 +81,12 @@ def get_schedules(user_id, year, month, date):
     )
     for s in schedule_object:
         schedule_dict = model_to_dict(s)
-        schedule_dict["start_date"] = str(schedule_dict["start_date"])
-        schedule_dict["start_time"] = str(schedule_dict["start_time"])
-        schedule_dict["finish_date"] = str(schedule_dict["finish_date"])
-        schedule_dict["finish_time"] = str(schedule_dict["finish_time"])
-        schedule_dict["created_at"] = str(schedule_dict["created_at"])
+        schedule_dict["start_date"]     = str(schedule_dict["start_date"])
+        schedule_dict["start_time"]     = str(schedule_dict["start_time"])
+        schedule_dict["finish_date"]    = str(schedule_dict["finish_date"])
+        schedule_dict["finish_time"]    = str(schedule_dict["finish_time"])
+        schedule_dict["created_at"]     = str(schedule_dict["created_at"])
+        schedule_dict["category_name"]  = Categories.objects.get(id = schedule_dict["category_id"]).category
         schedules.append(schedule_dict)
     return schedules
 
@@ -121,6 +123,48 @@ def create_schedule(request):
             finish_time = finish_time
         )
         res["message"]="create schedule successed"
+    except Exception as e:
+        print(e)
+        res["message"]=e
+    return JsonResponse(res)
+
+@csrf_exempt
+def edit_schedule(request):
+    res = {}
+    schedule_id = request.POST.get('schedule_id')
+    user_id     = User.objects.get(username = request.POST.get('username')).id
+    category    = request.POST.get('category')
+    title       = request.POST.get('title')
+    description = request.POST.get('description')
+    start_date  = datetime.datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d')
+    start_time  = request.POST.get('start_time')
+    finish_date = datetime.datetime.strptime(request.POST.get('finish_date'), '%Y-%m-%d')
+    finish_time = request.POST.get('finish_time')
+    try:
+        if Categories.objects.filter(
+            category = category,
+            user_id  = user_id
+        ):
+            print()
+        else:
+            Categories.objects.create(
+                category = category,
+                user_id  = User.objects.get(username = request.POST.get('username'))
+            )
+
+        schedule_instance                = Schedule.objects.get(id = schedule_id)
+        schedule_instance.category_id    = Categories.objects.get(category = category)
+        schedule_instance.title          = title
+        schedule_instance.description    = description
+        schedule_instance.start_date     = start_date
+        schedule_instance.start_time     = start_time
+        schedule_instance.finish_date    = finish_date
+        schedule_instance.finish_time    = finish_time
+        schedule_instance.save()
+        print(title)
+        print(Schedule.objects.get(id = schedule_id).title)
+
+        res["message"]="edit schedule successed"
     except Exception as e:
         print(e)
         res["message"]=e

@@ -115,6 +115,49 @@ function create_schedule(){
   });
 }
 
+function edit_schedule(schedule){
+  data = {
+    "schedule_id" : schedule["id"],
+    "username"    : username,
+    "title"       : $("#title_input").val(),
+    "start_date"  : $("#start_date_input").val(),
+    "start_time"  : $("#start_time_input").val(),
+    "finish_date" : $("#finish_date_input").val(),
+    "finish_time" : $("#finish_time_input").val(),
+    "category"    : $("#category_list").val(),
+    "description" : $("#description_input").val()
+  }
+  $.ajax({
+      url  : "calen/edit_schedule",
+      data : data,
+      type :'POST',
+  })
+  .then(
+      function (data) {
+        console.log(data);
+        schedule["title"]       = $("#title_input").val()
+        schedule["start_date"]  = $("#start_date_input").val()
+        schedule["start_time"]  = $("#start_time_input").val()
+        schedule["finish_date"] = $("#finish_date_input").val()
+        schedule["finish_time"] = $("#finish_time_input").val()
+        schedule["category"]    = $("#category_list").val()
+        schedule["description"] = $("#description_input").val()
+        console.log("変更前",schedules)
+        for(var i = 0; i < schedules.length; i++) {
+          if(schedules[i]["id"] === schedule["id"]) {
+            number = i;
+          }
+        }
+        console.log(number)
+        schedules[number] = schedule
+        console.log("変更後",schedules)
+        create_calendar();
+      },
+      function () {
+        alert("読み込み失敗");
+  });
+}
+
 function display_time_picker(){
   $(".start_date").datepicker();
   console.log(this_hour)
@@ -157,6 +200,21 @@ function display_time_picker(){
     scrollbar     : true,
     zindex        : 1100
   });
+}
+
+function insert_data_for_edit(schedule){
+  console.log(schedule)
+  $("#title_input").val(schedule["title"]);
+  $("#category_list").val(schedule["category_name"]);
+  $(".start_date").val(schedule["start_date"]);
+  $(".start_time").val(schedule["start_time"]);
+  $(".finish_date").val(schedule["finish_date"]);
+  $(".finish_time").val(schedule["finish_time"]);
+  $("#description_input").val(schedule["description"]);
+  $('#register_schedule_button').off('click',create_schedule );
+  $('#register_schedule_button').on('click',function(){
+    edit_schedule(schedule);
+  } );
 }
 
 function check_time(){
@@ -222,8 +280,8 @@ function display_schedule(schedules){
       for(var i=0; i < display_schedules.length; i++){
         calc_position(display_schedules[i]["start_time"], display_schedules[i]["finish_time"]);
         period = finish_position - start_position
-        $(".calendar_day tbody").append("<div id='schedule_"+i+"' class='schedule_day'>"+display_schedules[i]["title"]+"</div>")
-        $("#schedule_"+i).css("top",(start_position + 2) * 30 + 56);
+        $(".calendar_day tbody").append("<div id='schedule_"+i+"' class='schedule_day' onclick='insert_data_for_edit("+JSON.stringify(display_schedules[i])+");' data-toggle='modal' data-target='#schedule_modal'>"+display_schedules[i]["title"]+"</div>")
+        $("#schedule_"+i).css("top",(start_position) * 30 + 56);
         $("#schedule_"+i).css("height",period * 29);
       }
       break;

@@ -12,6 +12,11 @@
             <input id="title_input" class="form-control form-control-lg" type="text" placeholder="タイトルを入力">
         </div>
         <div class="modal-body">
+          <select class="form-control" id="roop_type_input">
+            <option value="none">繰り返さない</option>
+            <option value="ev_week">毎週この時間</option>
+            <option value="ev_day">毎日この時間</option>
+          </select>
           <div class="schedule_start_input">
             <input id="start_date_input" type="text" class="start_date" onchange="check_time();">
             <input id="start_time_input" type="text" class="start_time" onchange="check_time();">
@@ -23,6 +28,7 @@
           <input type="text" class="form-control" id="category_list" list="categories" placeholder="カテゴリを入力 / 選択してください">
           <datalist id="categories">
           </datalist>
+          <input type="text" class="form-control" id="place_input" placeholder="場所を入力してください">
           <textarea id="description_input" class="form-control" placeholder="メモの追加"></textarea>
         </div>
     </div>

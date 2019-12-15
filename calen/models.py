@@ -28,6 +28,8 @@ class Schedule(models.Model):
     category_id = models.ForeignKey(Categories, on_delete = models.CASCADE)
     title       = models.CharField(max_length = 20)
     description = models.TextField(blank = True)
+    place       = models.CharField(max_length = 40, blank = True)
+    roop_type   = models.CharField(max_length = 20)
     start_date  = models.DateField(default = datetime.date.today)
     start_time  = models.TimeField(default = datetime.time(16, 00))
     finish_date = models.DateField(default = datetime.date.today)

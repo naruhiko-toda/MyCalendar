@@ -94,13 +94,15 @@ def get_schedules(user_id, year, month, date):
 def create_schedule(request):
     res = {}
     user_id     = User.objects.get(username = request.POST.get('username')).id
-    category    = request.POST.get('category')
     title       = request.POST.get('title')
-    description = request.POST.get('description')
+    roop_type   = request.POST.get('roop_type')
     start_date  = datetime.datetime.strptime(request.POST.get('start_date'), '%Y/%m/%d')
     start_time  = request.POST.get('start_time')
     finish_date = datetime.datetime.strptime(request.POST.get('finish_date'), '%Y/%m/%d')
     finish_time = request.POST.get('finish_time')
+    category    = request.POST.get('category')
+    place       = request.POST.get('place')
+    description = request.POST.get('description')
     try:
         if Categories.objects.filter(
             category = category,
@@ -114,13 +116,15 @@ def create_schedule(request):
             )
         Schedule.objects.create(
             user_id     = User.objects.get(username = request.POST.get('username')),
-            category_id = Categories.objects.get(category = category),
             title       = title,
-            description = description,
+            roop_type   = roop_type,
             start_date  = start_date,
             start_time  = start_time,
             finish_date = finish_date,
-            finish_time = finish_time
+            finish_time = finish_time,
+            category_id = Categories.objects.get(category = category),
+            place       = place,
+            description = description,
         )
         res["message"]="create schedule successed"
     except Exception as e:
@@ -133,13 +137,15 @@ def edit_schedule(request):
     res = {}
     schedule_id = request.POST.get('schedule_id')
     user_id     = User.objects.get(username = request.POST.get('username')).id
-    category    = request.POST.get('category')
     title       = request.POST.get('title')
-    description = request.POST.get('description')
+    roop_type   = request.POST.get('roop_type')
     start_date  = datetime.datetime.strptime(request.POST.get('start_date'), '%Y-%m-%d')
     start_time  = request.POST.get('start_time')
     finish_date = datetime.datetime.strptime(request.POST.get('finish_date'), '%Y-%m-%d')
     finish_time = request.POST.get('finish_time')
+    category    = request.POST.get('category')
+    place       = request.POST.get('place')
+    description = request.POST.get('description')
     try:
         if Categories.objects.filter(
             category = category,
@@ -153,16 +159,16 @@ def edit_schedule(request):
             )
 
         schedule_instance                = Schedule.objects.get(id = schedule_id)
-        schedule_instance.category_id    = Categories.objects.get(category = category)
         schedule_instance.title          = title
-        schedule_instance.description    = description
+        schedule_instance.roop_type      = roop_type
         schedule_instance.start_date     = start_date
         schedule_instance.start_time     = start_time
         schedule_instance.finish_date    = finish_date
         schedule_instance.finish_time    = finish_time
+        schedule_instance.category_id    = Categories.objects.get(category = category)
+        schedule_instance.place          = place
+        schedule_instance.description    = description
         schedule_instance.save()
-        print(title)
-        print(Schedule.objects.get(id = schedule_id).title)
 
         res["message"]="edit schedule successed"
     except Exception as e:

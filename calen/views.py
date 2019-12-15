@@ -24,8 +24,8 @@ def index(request):
     #デフォルトで今月の月間カレンダーを表示する
     default_calendar = calendar.monthcalendar(now.year, now.month)
     res["calendar"] = json.dumps({
-    "value" : default_calendar,
-    "type"  : "month"
+        "value" : default_calendar,
+        "type"  : "month"
     })
 
     res["display_time"] = json.dumps({
@@ -74,6 +74,23 @@ def get_schedules(user_id, year, month, date):
         finish_month = datetime.date(year+1, 1, 1)
     else:
         finish_month = datetime.date(year, month+1, 1)
+
+    roop_schedules = Schedule.objects.filter(
+        user_id                 = user_id,
+        roop_type__startswith   = "ev"
+    )
+    for r_s in roop_schedules:
+        roop_schedule_dict = model_to_dict(r_s)
+        roop_schedule_dict["start_date"]     = str(roop_schedule_dict["start_date"])
+        roop_schedule_dict["start_time"]     = str(roop_schedule_dict["start_time"])
+        roop_schedule_dict["finish_date"]    = str(roop_schedule_dict["finish_date"])
+        roop_schedule_dict["finish_time"]    = str(roop_schedule_dict["finish_time"])
+        roop_schedule_dict["created_at"]     = str(roop_schedule_dict["created_at"])
+        roop_schedule_dict["category_name"]  = Categories.objects.get(
+            id = roop_schedule_dict["category_id"]
+        ).category
+        schedules.append(roop_schedule_dict)
+
     schedule_object = Schedule.objects.filter(
         user_id             = user_id,
         start_date__gte     = start_month,
@@ -86,8 +103,11 @@ def get_schedules(user_id, year, month, date):
         schedule_dict["finish_date"]    = str(schedule_dict["finish_date"])
         schedule_dict["finish_time"]    = str(schedule_dict["finish_time"])
         schedule_dict["created_at"]     = str(schedule_dict["created_at"])
-        schedule_dict["category_name"]  = Categories.objects.get(id = schedule_dict["category_id"]).category
+        schedule_dict["category_name"]  = Categories.objects.get(
+            id = schedule_dict["category_id"]
+        ).category
         schedules.append(schedule_dict)
+    schedules = list(map(json.loads, set(map(json.dumps, schedules))))
     return schedules
 
 @csrf_exempt

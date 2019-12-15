@@ -7,7 +7,7 @@ function create_calendar(){
         for(var j=0; j<7; j++){
           if(calendar["value"][i][j] != 0){
             $(".calendar_month tbody > tr:nth-child("+parseInt(i+1)+")").append("\
-              <td class='calendar'\
+              <td class='calendar has_day'\
               id="+display_time["display_year"]+"-"+display_time["display_month"]+"-"+calendar["value"][i][j]+"\
               onclick='select_day(this);'>\
               "+calendar["value"][i][j]+"</td>"
@@ -24,7 +24,6 @@ function create_calendar(){
       draw_today(this_year,this_month,this_date);
       break;
     case "day":
-      console.log("日毎のカレンダーです")
       $(".calendar_day tbody").empty();
       for(var i=0; i<48; i++){
         $(".calendar_day tbody").append("<tr class='daily_calendar_row'></tr>");
@@ -51,139 +50,6 @@ function display_calen_title(year,month,date,type){
 
 function draw_today(this_year,this_month,this_date){
   $("#"+this_year+"-"+this_month+"-"+this_date).css("background-color","#8ffbff")
-}
-
-function calendar_move(element){
-  data = {
-    "display_year"  : parseInt(display_time["display_year"]),
-    "display_month" : parseInt(display_time["display_month"]),
-    "display_date"  : parseInt(display_time["display_date"]),
-    "type"          : element.value,
-    "format"        : calendar["type"]
-  }
-  console.log(data)
-  $.ajax({
-      url : "calen/get_calendar",
-      data: data,
-      type:'POST',
-  })
-  .then(
-      function (data) {
-        console.log(data)
-        display_time = JSON.parse(data["display_time"])
-        calendar = JSON.parse(data["calendar"])
-        console.log(display_time)
-        console.log(calendar)
-        display_calen_title(
-          display_time["display_year"],
-          display_time["display_month"],
-          display_time["display_date"],
-          calendar["type"]
-        )
-        create_calendar();
-        draw_today(this_year,this_month,this_date);
-      },
-      function () {
-        alert("読み込み失敗");
-        location.reload();
-  });
-}
-
-function create_schedule(){
-  data = {
-    "username"    : username,
-    "title"       : $("#title_input").val(),
-    "roop_type"   : $("#roop_type_input").val(),
-    "start_date"  : $("#start_date_input").val(),
-    "start_time"  : $("#start_time_input").val(),
-    "finish_date" : $("#finish_date_input").val(),
-    "finish_time" : $("#finish_time_input").val(),
-    "category"    : $("#category_list").val(),
-    "place"       : $("#place_input").val(),
-    "description" : $("#description_input").val()
-  }
-  $.ajax({
-      url  : "calen/create_schedule",
-      data : data,
-      type :'POST',
-  })
-  .then(
-      function (data) {
-        console.log(data);
-        alert(data["message"])
-      },
-      function () {
-        alert("読み込み失敗");
-  });
-}
-
-function edit_schedule(schedule){
-  data = {
-    "schedule_id" : schedule["id"],
-    "username"    : username,
-    "title"       : $("#title_input").val(),
-    "roop_type"   : $("#roop_type_input").val(),
-    "start_date"  : $("#start_date_input").val(),
-    "start_time"  : $("#start_time_input").val(),
-    "finish_date" : $("#finish_date_input").val(),
-    "finish_time" : $("#finish_time_input").val(),
-    "category"    : $("#category_list").val(),
-    "place"       : $("#place_input").val(),
-    "description" : $("#description_input").val()
-  }
-  $.ajax({
-      url  : "calen/edit_schedule",
-      data : data,
-      type :'POST',
-  })
-  .then(
-      function (data) {
-        console.log(data);
-        schedule["title"]       = $("#title_input").val()
-        schedule["roop_type"]   = $("#roop_type_input").val()
-        schedule["start_date"]  = $("#start_date_input").val()
-        schedule["start_time"]  = $("#start_time_input").val()
-        schedule["finish_date"] = $("#finish_date_input").val()
-        schedule["finish_time"] = $("#finish_time_input").val()
-        schedule["category"]    = $("#category_list").val()
-        schedule["place"]       = $("#place_input").val()
-        schedule["description"] = $("#description_input").val()
-        console.log("変更前",schedules)
-        for(var i = 0; i < schedules.length; i++) {
-          if(schedules[i]["id"] === schedule["id"]) {
-            number = i;
-          }
-        }
-        console.log(number)
-        schedules[number] = schedule
-        console.log("変更後",schedules)
-        create_calendar();
-      },
-      function () {
-        alert("読み込み失敗");
-  });
-}
-
-function delete_schedule(schedule){
-  data = {
-    schedule_id : schedule["id"]
-  }
-  $.ajax({
-      url  : "calen/delete_schedule",
-      data : data,
-      type :'POST',
-  })
-  .then(
-      function (data) {
-        console.log(data);
-        console.log("変更前",schedules)
-        schedules = schedules.filter(n => n["id"] !== schedule["id"])
-        console.log("変更後",schedules)
-        create_calendar();
-      },
-      function () {
-        alert("読み込み失敗");
-  });
 }
 
 function display_time_picker(){
@@ -298,10 +164,29 @@ function check_user_login_statement(){
 function display_schedule(schedules){
   switch (calendar["type"]) {
     case "month":
+    console.log(schedules);
       for(var i=0; i < schedules.length; i++){
-        $("#"+schedules[i]["start_date"]).append("\
+        if(schedules[i]["roop_type"] == "ev_day"){
+          $(".has_day").append("\
           <li class='schedule_month'>"+schedules[i]["title"]+"</li>\
-        ")
+          ");
+        }else if(schedules[i]["roop_type"] == "ev_week"){
+          console.log("毎週のやつ")
+          this_day_order = new Date(schedules[i]["start_date"]).getDay()
+          console.log(this_day_order)
+          for(var j=0; j<calendar["value"].length; j++){
+            if(calendar["value"][j][this_day_order] != 0){
+              $(".calendar_month tbody tr:nth-child("+j+") td:nth-child("+parseInt(this_day_order+1)+")").append(
+                "<li class='schedule_month'>"+schedules[i]["title"]+"</li>"
+              )
+            }
+          }
+        }else{
+          // console.log("そのほかのやつ")
+          $("#"+schedules[i]["start_date"]).append("\
+            <li class='schedule_month'>"+schedules[i]["title"]+"</li>\
+          ");
+        }
       }
       break;
 
@@ -334,20 +219,6 @@ function calc_position(start_time,finish_time){
   finish_position   = finish_hour * 2 + Math.ceil(finish_minute / 30)
 }
 
-function switch_calendar(){
-  element = $("#switch_button");
-  format = $("#switch_button").val();
-  console.log(format)
-  switch (format) {
-    case "day":
-      to_day_calendar(this_year, this_month, this_date);
-      break;
-    case "month":
-      to_month_calendar(this_year, this_month, this_date);
-      break;
-  };
-}
-
 function select_day(element){
   console.log(element);
   selected_date_list   = element.id.split("-");
@@ -358,68 +229,6 @@ function select_day(element){
   to_day_calendar(selected_year, selected_month, selected_date);
 }
 
-function to_day_calendar(year, month, date){
-  console.log(date)
-  data = {
-    "display_year"  : year,
-    "display_month" : month,
-    "display_date"  : date,
-    "type"          : "switch",
-    "format"        : "day"
-  }
-  console.log(data)
-  $.ajax({
-      url : "calen/get_calendar",
-      data: data,
-      type:'POST',
-  })
-  .then(
-      function (data) {
-        display_time = JSON.parse(data["display_time"])
-        calendar = JSON.parse(data["calendar"])
-        console.log(calendar)
-        $(".calendar_day").show();
-        $(".calendar_month").hide();
-        $("#switch_button").val("month");
-        $("#switch_button").html("month");
-        create_calendar();
-      },
-      function () {
-        alert("読み込み失敗");
-        location.reload();
-  });
-}
-
-function to_month_calendar(year, month, date){
-  console.log(year,month,date)
-  data = {
-    "display_year"  : year,
-    "display_month" : month,
-    "display_date"  : date,
-    "type"          : "switch",
-    "format"        : "month"
-  }
-  console.log(data)
-  $.ajax({
-      url : "calen/get_calendar",
-      data: data,
-      type:'POST',
-  })
-  .then(
-      function (data) {
-        display_time = JSON.parse(data["display_time"])
-        calendar = JSON.parse(data["calendar"])
-        $(".calendar_day").hide();
-        $(".calendar_month").show();
-        $("#switch_button").val("day");
-        $("#switch_button").html("day");
-        create_calendar();
-      },
-      function () {
-        alert("読み込み失敗");
-        location.reload();
-  });
-}
 
 // ログインmodalにonchange属性を付与する
 $(document).on('change', 'input[name=password]', function () {

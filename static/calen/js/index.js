@@ -25,13 +25,9 @@ function create_calendar(){
       break;
     case "day":
       $(".calendar_day tbody").empty();
-      $(".calendar_day tbody").append("<tr></tr>")
       for(var j=0; j<7; j++){
-        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i+1)+")").append("\
+        $(".calendar_day tbody tr").append("\
           <td>"+calendar["value"][i]+"</td>"
-        )
-        $(".calendar_day tbody > tr:nth-child("+parseInt(2*i)+")").append("\
-          <td></td>"
         )
       }
       break;
@@ -205,10 +201,62 @@ function display_schedule(schedules){
   }
 }
 
+function switch_calender(){
+  element = $("#switch_button");
+  format = $("#switch_button").val();
+  console.log(format)
+  switch (format) {
+    case "day":
+      to_day_calender(element);
+      $("#switch_button").val("month");
+      $("#switch_button").html("month");
+      break;
+    case "month":
+      to_month_calender(element);
+      $("#switch_button").val("day");
+      $("#switch_button").html("day");
+      break;
+  };
+}
 function to_day_calender(element){
-  
+  console.log(element)
+  // data = {
+  //   "display_date"  : parseInt(display_time["display_date"]),
+  //   "display_month" : parseInt(display_time["display_month"]),
+  //   "display_year"  : parseInt(display_time["display_year"]),
+  //   "format"        : "day"
+  // }
+  // console.log(data)
+  // $.ajax({
+  //     url : "calen/get_calendar",
+  //     data: data,
+  //     type:'POST',
+  // })
+  // .then(
+  //     function (data) {
+  //       console.log(data)
+  //       display_time = JSON.parse(data["display_time"])
+  //       calendar = JSON.parse(data["calendar"])
+  //       console.log(display_time)
+  //       console.log(calendar)
+  //       display_year_month(display_time["display_year"],display_time["display_month"])
+  //       create_calendar();
+  //       draw_today(this_year,this_month,this_date);
+  //     },
+  //     function () {
+  //       alert("読み込み失敗");
+  //       location.reload();
+  // });
+  //
+  $(".calendar_day").show();
+  $(".calendar_month").hide();
 }
 
+function to_month_calender(element){
+  console.log(element)
+  $(".calendar_day").hide();
+  $(".calendar_month").show();
+}
 // onchange属性を付与する
 $(document).on('change', 'input[name=password]', function () {
 

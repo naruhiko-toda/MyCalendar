@@ -113,15 +113,29 @@ td{
     width: 90%;
 }
 
-.schedule{
+.schedule_month{
   list-style-type: none;
   text-overflow: clip;
   font-size: 0.3rem;
   background-color: #78b73e;
   color: #FFF;
-  border-radius: 20%;
+  border-radius: 10%;
   margin-bottom: 1px;
 }
+
+.schedule_day{
+  position: absolute;
+  list-style-type: none;
+  text-overflow: clip;
+  background-color: #78b73e;
+  color: #FFF;
+  width: 85%;
+  margin-left: 15%;
+  border-radius: 10%;
+  height: 29px;
+  margin-bottom: 1px;
+}
+
 
 .calendar_day table{
   width: 85%;

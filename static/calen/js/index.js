@@ -209,14 +209,47 @@ function check_user_login_statement(){
 
 function display_schedule(schedules){
   console.log(schedules);
-  for(var i=0; i < schedules.length; i++){
-    console.log(schedules[i]);
-    $("#"+schedules[i]["start_date"]).append("\
-      <li class='schedule'>"+schedules[i]["title"]+"</li>\
-    ")
+  switch (calendar["type"]) {
+    case "month":
+      for(var i=0; i < schedules.length; i++){
+        console.log(schedules[i]);
+        $("#"+schedules[i]["start_date"]).append("\
+          <li class='schedule_month'>"+schedules[i]["title"]+"</li>\
+        ")
+      }
+      break;
+
+    case "day":
+      display_schedules = schedules.filter(
+        s => s["start_date"] === display_time["display_year"]+"-"+display_time["display_month"]+"-"+display_time["display_date"]
+      )
+      console.log(display_schedules)
+      for(var i=0; i < display_schedules.length; i++){
+        calc_position(display_schedules[i]["start_time"], display_schedules[i]["finish_time"]);
+        console.log(start_position)
+        console.log(finish_position)
+        period = finish_position - start_position
+        $(".calendar_day").append("<div id='schedule_"+i+"' class='schedule_day'>"+display_schedules[i]["title"]+"</div>")
+        $("#schedule_"+i).css("top",(start_position + 2) * 30 + 56);
+        $("#schedule_"+i).css("height",period * 29);
+      }
+      break;
   }
 }
 
+function calc_position(start_time,finish_time){
+  // 予定が始まる時間
+  start_time_list   = start_time.split(":")
+  start_hour        = start_time_list[0]
+  start_minute      = start_time_list[1]
+  start_position    = start_hour * 2 + Math.ceil(start_minute / 30)
+
+  // 予定が終わる時間
+  finish_time_list  = finish_time.split(":")
+  finish_hour       = finish_time_list[0]
+  finish_minute     = finish_time_list[1]
+  finish_position   = finish_hour * 2 + Math.ceil(finish_minute / 30)
+}
 function switch_calendar(){
   element = $("#switch_button");
   format = $("#switch_button").val();

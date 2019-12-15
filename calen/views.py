@@ -146,6 +146,10 @@ def create_schedule(request):
             place       = place,
             description = description,
         )
+        # Action.objects.create(
+        #     user_id     = User.objects.get(username = request.POST.get('username')),
+        #     action      = "{\"type\":\"create_schedule\"}"
+        # )
         res["message"]="create schedule successed"
     except Exception as e:
         print(e)

@@ -134,9 +134,19 @@ def get_calendar(request):
     display_month   = int(request.POST["display_month"])
     display_date    = int(request.POST["display_date"])
     if request.POST["type"] == "forward":
-        tar_calendar,tar_year,tar_month = get_forward_calendar(display_year, display_month)
+        tar_calendar, tar_year, tar_month, tar_date = get_forward_calendar(
+            display_year,
+            display_month,
+            display_date,
+            request.POST["format"]
+        )
     elif request.POST["type"] == "back":
-        tar_calendar,tar_year,tar_month = get_before_calendar(display_year, display_month)
+        tar_calendar,tar_year,tar_month, tar_date = get_before_calendar(
+            display_year,
+            display_month,
+            display_date,
+            request.POST["format"]
+        )
     else:
         tar_year        = display_year
         tar_month       = display_month
@@ -152,10 +162,11 @@ def get_calendar(request):
         "type"  : request.POST["format"]
     })
     res["display_time"] = json.dumps({
-        "display_date"  : str(display_date),
         "display_year"  : str(tar_year),
         "display_month" : str(tar_month),
+        "display_date"  : str(tar_date),
     })
+    print(res)
     return JsonResponse(res)
 
 # カテゴリをまとめたり消したりする機能をつけたい。
@@ -163,23 +174,64 @@ def get_calendar(request):
 def edit_category(request):
     return True
 
-def get_before_calendar(year, month):
-    if month == 1:
-        tar_year    = year - 1
-        tar_month   = 12
+def get_before_calendar(year, month, date, type):
+    if type == "month":
+        if month == 1:
+            tar_year    = year - 1
+            tar_month   = 12
+            tar_date    = date
+        else:
+            tar_year    = year
+            tar_month   = month - 1
+            tar_date    = date
+        return calendar.monthcalendar(tar_year, tar_month),tar_year,tar_month
     else:
-        tar_year    = year
-        tar_month   = month - 1
-    return calendar.monthcalendar(tar_year, tar_month),tar_year,tar_month
+        if date == 1:
+            if month == 1:
+                tar_year        = year - 1
+                tar_month       = 12
+                tar_date        = str(calendar.monthrange(tar_year, tar_month)[1])
+            else:
+                tar_year        = year
+                tar_month       = month - 1
+                tar_date        = str(calendar.monthrange(tar_year, tar_month)[1])
+        else:
+            tar_year            = year
+            tar_month           = month
+            tar_date            = date - 1
+        return [tar_date], tar_year, tar_month, tar_date
 
-def get_forward_calendar(year, month):
-    if month == 12:
-        tar_year    = year + 1
-        tar_month   = 1
+def get_forward_calendar(year, month, date, type):
+    if type == "month":
+        if month == 12:
+            tar_year    = year + 1
+            tar_month   = 1
+            tar_date    = date
+        else:
+            tar_year    = year
+            tar_month   = month + 1
+            tar_date    = date
+        return calendar.monthcalendar(tar_year, tar_month),tar_year,tar_month, tar_date
     else:
-        tar_year    = year
-        tar_month   = month + 1
-    return calendar.monthcalendar(tar_year, tar_month),tar_year,tar_month
+        if month == 12:
+            if date == 31:
+                tar_year    = year + 1
+                tar_month   = 1
+                tar_date    = 1
+            else:
+                tar_year    = year
+                tar_month   = month
+                tar_date    = date + 1
+        else:
+            if date == calendar.monthrange(year, month)[1]:
+                tar_year    = year
+                tar_month   = month + 1
+                tar_date    = 1
+            else:
+                tar_year    = year
+                tar_month   = month
+                tar_date    = date + 1
+        return [tar_date], tar_year, tar_month, tar_date
 
 @csrf_exempt
 def sign_up(request):

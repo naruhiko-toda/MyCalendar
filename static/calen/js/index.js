@@ -185,8 +185,6 @@ function check_time(){
   finish_minute     = finish_time_list[1]
 
   finish            = new　Date(finish_year,finish_month,finish_date,finish_hour,finish_minute,0)
-  console.log(start);
-  console.log(finish);
   if(start > finish){
     $("#register_schedule_button").prop("disabled", true);
     $(".finish_date").addClass("error_input")
@@ -208,11 +206,9 @@ function check_user_login_statement(){
 };
 
 function display_schedule(schedules){
-  console.log(schedules);
   switch (calendar["type"]) {
     case "month":
       for(var i=0; i < schedules.length; i++){
-        console.log(schedules[i]);
         $("#"+schedules[i]["start_date"]).append("\
           <li class='schedule_month'>"+schedules[i]["title"]+"</li>\
         ")
@@ -223,13 +219,10 @@ function display_schedule(schedules){
       display_schedules = schedules.filter(
         s => s["start_date"] === display_time["display_year"]+"-"+display_time["display_month"]+"-"+display_time["display_date"]
       )
-      console.log(display_schedules)
       for(var i=0; i < display_schedules.length; i++){
         calc_position(display_schedules[i]["start_time"], display_schedules[i]["finish_time"]);
-        console.log(start_position)
-        console.log(finish_position)
         period = finish_position - start_position
-        $(".calendar_day").append("<div id='schedule_"+i+"' class='schedule_day'>"+display_schedules[i]["title"]+"</div>")
+        $(".calendar_day tbody").append("<div id='schedule_"+i+"' class='schedule_day'>"+display_schedules[i]["title"]+"</div>")
         $("#schedule_"+i).css("top",(start_position + 2) * 30 + 56);
         $("#schedule_"+i).css("height",period * 29);
       }
@@ -250,6 +243,7 @@ function calc_position(start_time,finish_time){
   finish_minute     = finish_time_list[1]
   finish_position   = finish_hour * 2 + Math.ceil(finish_minute / 30)
 }
+
 function switch_calendar(){
   element = $("#switch_button");
   format = $("#switch_button").val();

@@ -129,16 +129,27 @@ def create_schedule(request):
 @csrf_exempt
 def get_calendar(request):
     res={}
+    # 送信時点で表示している年、月、日
     display_year    = int(request.POST["display_year"])
     display_month   = int(request.POST["display_month"])
     display_date    = int(request.POST["display_date"])
     if request.POST["type"] == "forward":
         tar_calendar,tar_year,tar_month = get_forward_calendar(display_year, display_month)
-    else:
+    elif request.POST["type"] == "back":
         tar_calendar,tar_year,tar_month = get_before_calendar(display_year, display_month)
+    else:
+        tar_year        = display_year
+        tar_month       = display_month
+        tar_date        = display_date
+
+        if request.POST["format"] == "day":
+            tar_calendar = [display_date]
+        else:
+            tar_calendar = calendar.monthcalendar(display_year, display_month)
+
     res["calendar"] = json.dumps({
         "value" : tar_calendar,
-        "type"  : "month"
+        "type"  : request.POST["format"]
     })
     res["display_time"] = json.dumps({
         "display_date"  : str(display_date),

@@ -247,8 +247,28 @@ function select_day(element){
   to_day_calendar(selected_year, selected_month, selected_date);
 }
 
-
-// ログインmodalにonchange属性を付与する
-$(document).on('change', 'input[name=password]', function () {
-
-});
+function check_password(){
+  $("#id_password1").on('change',function () {
+    value = $("#id_password1").val()
+    if(value.length < 8){
+      alert("パスワードは8文字以上にしてください。")
+      $("#id_password1").addClass("error_input")
+      $("#sign_up_complete_button").prop("disabled", true);
+    }else if(value.match(/^([1-9]\d*|0)$/)){
+      alert("数字だけのパスワードは不可です。")
+      $("#id_password1").addClass("error_input")
+      $("#sign_up_complete_button").prop("disabled", true);
+    }else{
+      $("#id_password1").removeClass("error_input")
+      $("#sign_up_complete_button").prop("disabled", false);
+    }
+  });
+  $("#id_password2").on('change',function () {
+    value = $("#id_password2").val()
+    if(value != $("#id_password1").val()){
+      alert("異なるパスワードが入力されています")
+      $("#id_password2").addClass("error_input")
+      $("#sign_up_complete_button").prop("disabled", true);
+    }
+  });
+}

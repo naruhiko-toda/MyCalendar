@@ -12,22 +12,24 @@
     <title>calen</title>
   </head>
   <body>
-    <header>
-      {% include "./modules/header.html" %}
-    </header>
-    {% include "./modules/login_modal.html" %}
-    <div class="calendar_month">
-      {% include "./modules/calendar_month.html" %}
+    <div id="wrapper">
+      <header>
+        {% include "./modules/header.html" %}
+      </header>
+      {% include "./modules/login_modal.html" %}
+      <div class="calendar_month">
+        {% include "./modules/calendar_month.html" %}
+      </div>
+      <div class="calendar_day">
+        {% include "./modules/calendar_day.html" %}
+      </div>
+      <div class="schedule_modal">
+        {% include "./modules/schedule_modal.html" %}
+      </div>
+      <footer>
+        {% include "./modules/footer.html" %}
+      </footer>
     </div>
-    <div class="calendar_day">
-      {% include "./modules/calendar_day.html" %}
-    </div>
-    <div class="schedule_modal">
-      {% include "./modules/schedule_modal.html" %}
-    </div>
-    <footer>
-      {% include "./modules/footer.html" %}
-    </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script>
       var user = {{ user | safe }};
@@ -58,6 +60,9 @@
           $("#categories").append("<option value="+categories[i]+">"+categories[i]+"</option>")
         }
         $('#register_schedule_button').on('click',create_schedule );
+        // ログインmodalにonchange属性を付与する
+        check_password();
+
       });
 
     </script>

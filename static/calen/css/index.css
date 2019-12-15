@@ -1,7 +1,20 @@
+*{
+  box-sizing: border-box;
+}
+
+body,#wrapper{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 #logo{
   font-family: 'Pacifico', cursive;
 }
 
+footer {
+  margin-top: auto;
+}
 .calendar_day{
   display: none;
 }
@@ -82,11 +95,6 @@ td{
 }
 
 
-*{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 .content{
     margin: 0 auto;
     padding: 40px;
@@ -156,4 +164,8 @@ td{
 #delete_schedule_button{
   display: none;
   margin-left: 20px;
+}
+
+#sign_up_complete_button, #sign_in_complete_button{
+  margin-top: 10px;
 }
